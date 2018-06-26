@@ -2,9 +2,26 @@
 # Development. Will be a good future learning resource. 
 
 import requests
-
+from bs4 import BeautifulSoup
+ 
 batters_url = "https://www.fangraphs.com/dailyprojections.aspx?pos=all&stats=bat&type=sabersim"
-pitcher_url = "https://www.fangraphs.com/dailyprojections.aspx?pos=all&stats=pit&type=sabersim"
+pitchers_url = "https://www.fangraphs.com/dailyprojections.aspx?pos=all&stats=pit&type=sabersim"
+
+
+###############################################################################
+# package GET request, send & catch response. Retrieve form data for a POST request
+###############################################################################
+
+r = requests.get(batters_url)
+html_doc = r.text
+tag_soup = BeautifulSoup(html_doc, 'html.parser')
+tag_soup.find_all('input')
+
+
+###############################################################################
+# Make post request to retrieve CSV data
+###############################################################################
+
 
 # https://en.wikipedia.org/wiki/POST_(HTTP)
 # set the form data, which will be submitted as the body of HTTP post request to web server.
