@@ -70,10 +70,45 @@ def parse_text_to_df(txt):
     df = sim_df.apply(pd.to_numeric, errors='ignore')
 
 
+
+
+def series_today_date(df):
+    """create a pandas Series of the same length as an existing data frame
+    that captures today's date as a datetime64 type.
+    """
+
+    today = date.today().isoformat()
+    today_array = pd.Series([today] * df.shape[0])
+    return pd.to_datetime(today_array, format="%Y-%m-%d")
+
+
+def write_to_csv(df, file_path, mode='a'):
+    """write a dataframe to a .CSV file path on disk. Anticipates 2 modes: 'w',
+    or 'a'.
+    >>> write_date(batter_df, '/Users/myname/Desktop/projections.csv', 'a')
+    "success: added 252 rows to file."
+    """
+
+    if mode == 'a':
+        with open(file_path, 'a') as f:
+            df.to_csv(f, index=False, header=False)
+        print('success: added {} rows to file'.format(df.shape[0]))
+
+    if mode == 'w':
+        with open(file_path, 'w') as f:
+            df.to_csv(f, index=False)
+        print('success: new file with {} rows and {} columns'.format(df.shape))
+
+    else:
+        print('something not right...')
+
+
+
+
 # TO DO LIST
-# 1. Function for Adding a Date column to the DataFrame
-# 2. Function to open a context manager for appending dataframe to existing
-#   CSV or writing to a new CSV
+#DONE##### 1a. Function for creating a Date series to the DataFrame
+# 1b. Add the Date column to the dataframe
+#DONE##### 2. Function to open a context manager for appending dataframe to existing CSV or writing to a new CSV
 # 3. Need to write code to execute the file if the module name == __main__
 #   http://ibiblio.org/g2swap/byteofpython/read/module-name.html
 #   https://stackoverflow.com/questions/419163/what-does-if-name-main-do
