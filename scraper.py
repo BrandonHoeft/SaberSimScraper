@@ -63,6 +63,11 @@ sim_df = pd.DataFrame.from_records(sim_list_tup,
 # Columns that can be converted to a numeric type will be converted
 sim_df = sim_df.apply(pd.to_numeric, errors='ignore')
 
+
+###############################################################################
+# Add a Date Column
+###############################################################################
+
 # Create a Date column for today's date.
 today = date.today().isoformat()
 today_array = pd.Series([today] * sim_df.shape[0])
@@ -73,3 +78,27 @@ sim_df['Date'] = pd.to_datetime(today_array, format="%Y-%m-%d")
 # check data
 sim_df.dtypes
 sim_df.shape
+
+###############################################################################
+# Append Dataframe to existing File on disk.
+###############################################################################
+
+# Need to run the lines above twice, once using batter_url, and then another
+# time substituting the pitcher_url. During each process use the context
+# manager below with the relevant data frame (line 96).
+
+batters_path = '/Users/bhoeft/Desktop/baseball_data_dfs/SaberSim/sabersim_batters.csv'
+pitchers_path = '/Users/bhoeft/Desktop/baseball_data_dfs/SaberSim/sabersim_pitchers.csv'
+
+
+# open context manager to append batters dataframes to existing file, auto close.
+with open(batters_path, 'a') as f:
+    sim_df.to_csv(f, index=False, header=False)
+
+
+
+# check the updated df for batters
+batters_total_df = pd.read_csv('/Users/bhoeft/Desktop/baseball_data_dfs/SaberSim/sabersim_batters.csv')
+
+# check the updated df for pitchers
+pitchers_total_df = pd.read_csv('/Users/bhoeft/Desktop/baseball_data_dfs/SaberSim/sabersim_pitchers.csv')
