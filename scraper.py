@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+from datetime import date
 
 batters_url = "https://www.fangraphs.com/dailyprojections.aspx?pos=all&stats=bat&type=sabersim"
 pitchers_url = "https://www.fangraphs.com/dailyprojections.aspx?pos=all&stats=pit&type=sabersim"
@@ -63,3 +64,12 @@ sim_df = pd.DataFrame.from_records(sim_list_tup,
 sim_df = sim_df.apply(pd.to_numeric, errors='ignore')
 
 # Create a Date column for today's date.
+today = date.today().isoformat()
+today_array = pd.Series([today] * sim_df.shape[0])
+
+# to_datetime parses a date representation into a date type format.
+sim_df['Date'] = pd.to_datetime(today_array, format="%Y-%m-%d")
+
+# check data
+sim_df.dtypes
+sim_df.shape
