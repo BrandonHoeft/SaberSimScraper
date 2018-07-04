@@ -97,7 +97,7 @@ def write_to_csv(df, file_path, mode='a'):
             df.to_csv(f, index=False, header=False)
         print('success: added {} rows to file'.format(df.shape[0]))
 
-    if mode == 'w':
+    elif mode == 'w':
         with open(file_path, 'w') as f:
             df.to_csv(f, index=False)
         print('success: new file with {} rows and {} columns'.format(df.shape))
