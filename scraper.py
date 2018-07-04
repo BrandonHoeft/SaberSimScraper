@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import date
+import os
 
 
 batters_url = "https://www.fangraphs.com/dailyprojections.aspx?pos=all&stats=bat&type=sabersim"
@@ -86,27 +87,34 @@ def series_today_date(df):
 
 
 def write_to_csv(df, file_path, mode='a'):
-    """write a dataframe to a .CSV file path on disk. Anticipates 2 modes: 'w',
-    or 'a'.
+    """write a dataframe to a .CSV file path on disk. Anticipates 2 modes: 'w'
+    for writing to new file, or 'a' for appending to an existing file path. 
     >>> write_date(batter_df, '/Users/myname/Desktop/projections.csv', 'a')
     "success: added 252 rows to file."
-    """    
-    
+    """        
     if mode == 'a':
+        # check that for append mode, a file exists to append. if not, exit.
+        if not os.path.exists(file_path):
+            print('error:', file_path, 'does not exist.')
+            return # return none, exits func.
+
         with open(file_path, 'a') as f:
             df.to_csv(f, index=False, header=False)
-        print('success: added {} rows to file'.format(df.shape[0]))
+        print('success: added {0} rows to {1}'.format(df.shape[0], file_path))
 
     elif mode == 'w':
         with open(file_path, 'w') as f:
-            df.to_csv(f, index=False)
-        print('success: new file with {} rows and {} columns'.format(df.shape))
+            df.to_csv(f, index=False, header=True)
+        print('success: new file with {} rows and {} columns'.format(*df.shape))
 
     else:
-        print('something not right...')
+        print('something did not work as expected. investigate...')
 
 
 
+
+#if __name__ == '__main':
+    
 # TO DO LIST
 #DONE##### 1a. Function for creating a Date series to the DataFrame
 # 1b. Add the Date column to the dataframe

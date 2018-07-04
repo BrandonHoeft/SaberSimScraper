@@ -10,7 +10,6 @@ os.chdir(desired_path)
 
 import scraper
 
-
 # Test 1: test get_form_data(). Should return dict of 3 key:val pairs
 ###############################################################################
 
@@ -55,13 +54,22 @@ if len(test4) == rows and test4_unique_date == date.today().isoformat():
 #   file or write/overwrite a filepath specified depending on the mode.
 ###############################################################################
 
-os.getcwd()
-
 test5_path = 'sabersim_batters_TEST.csv'
 
+# test5_path does not exist in github directory. Should fail and print error.
+scraper.write_to_csv(test3, test5_path, 'a')
+# write to new file. Should get a success log statement. 
+scraper.write_to_csv(test3, test5_path, 'w')
+# append data to newly written file. Should get a success log statement. 
 scraper.write_to_csv(test3, test5_path, 'a')
 
-# may need to check if the path exists in the first if statement. if not 
-# then break, print a statement that the file does not exist and shouldn't be
-# appended.
-os.path.exists('/Users/bhoeft/Desktop/baseball_data_dfs/SaberSim/sabersim_batters3.csv')
+test5_result = os.path.exists(test5_path)
+
+
+# Did any of test 1-5 fail?
+###############################################################################
+
+if (test1_result and test2_result and test3_result and test4_result and test5_result):
+    print('All Tests passed!')
+else:
+    print('Some Tests failed.')
