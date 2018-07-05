@@ -1,0 +1,8 @@
+Instructions for Running scraper.py from Macbook Terminal:
+https://stackoverflow.com/questions/21492214/how-to-run-python-script-on-terminal/36240488
+
+>>> python /users/name/.../scraper.py
+
+or set the current directory in terminal first, then run:
+
+>>> python scraper.py

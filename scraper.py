@@ -1,12 +1,11 @@
+# run module to scrape and append today's new hitter, pitcher projections.
+
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import date
 import os
 
-
-batters_url = "https://www.fangraphs.com/dailyprojections.aspx?pos=all&stats=bat&type=sabersim"
-pitchers_url = "https://www.fangraphs.com/dailyprojections.aspx?pos=all&stats=pit&type=sabersim"
 
 
 def get_form_data(url):
@@ -113,13 +112,21 @@ def write_to_csv(df, file_path, mode='a'):
 
 
 
-#if __name__ == '__main':
+if __name__ == '__main__':
     
-# TO DO LIST
-#DONE##### 1a. Function for creating a Date series to the DataFrame
-# 1b. Add the Date column to the dataframe
-#DONE##### 2. Function to open a context manager for appending dataframe to existing CSV or writing to a new CSV
-# 3. Need to write code to execute the file if the module name == __main__
-#   http://ibiblio.org/g2swap/byteofpython/read/module-name.html
-#   https://stackoverflow.com/questions/419163/what-does-if-name-main-do
-# 4. NEED TO TEST FUNCTIONS. Create a unit_tests.py.
+    # ID hitter/pitcher urlsfor scraping, local file paths for writing. 
+    hitters_url = 'https://www.fangraphs.com/dailyprojections.aspx?pos=all&stats=bat&type=sabersim'  
+    hitters_out = '/Users/bhoeft/Desktop/baseball_data_dfs/SaberSim/sabersim_batters.csv'
+    pitchers_url = 'https://www.fangraphs.com/dailyprojections.aspx?pos=all&stats=pit&type=sabersim'
+    pitchers_out = '/Users/bhoeft/Desktop/baseball_data_dfs/SaberSim/sabersim_pitchers.csv'
+    locations = [[hitters_url, hitters_out],
+                 [pitchers_url, pitchers_out]]
+    
+    # loop over hitter, pitcher url/file path and apply 
+    # same scrape, parse, transform, write process.
+    for i in range(len(locations)):
+        param_dict = get_form_data(locations[i][0])
+        text = scrape_data(locations[i][0], form_data=param_dict)
+        df = parse_text_to_df(text)
+        df['Date'] = series_today_date(df)
+        write_to_csv(df, locations[i][1], 'a')
