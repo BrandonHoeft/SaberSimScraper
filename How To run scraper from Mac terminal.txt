@@ -1,8 +1,14 @@
-Instructions for Running scraper.py from Macbook Terminal:
+Instructions for running the scraper.py module from Macbook Terminal. So that
+it will scrape, parse, and write output to new .CSV file on disk or append
+to existing .CSV file depending on your setup.
+
+Link reference:
 https://stackoverflow.com/questions/21492214/how-to-run-python-script-on-terminal/36240488
 
+Examples:
 >>> python /users/name/.../scraper.py
 
 or set the current directory in terminal first, then run:
 
+>>> cd users/name/Desktop/temp_folder
 >>> python scraper.py
